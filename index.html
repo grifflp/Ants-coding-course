@@ -1,0 +1,726 @@
+import React, { useState, useEffect } from 'react';
+import { CheckCircle, Circle, Lock, Book, Trophy, Code, ChevronRight, ChevronLeft, Star } from 'lucide-react';
+
+const courseData = {
+  nerdRewards: [
+    { id: 1, name: "Thick-Rimmed Glasses", emoji: "🤓", description: "Classic nerd starter pack!" },
+    { id: 2, name: "Pocket Protector", emoji: "📝", description: "Keep those pens safe!" },
+    { id: 3, name: "Acne Breakout", emoji: "😬", description: "Too much screen time!" },
+    { id: 4, name: "Braces", emoji: "😁", description: "Smile and debug!" },
+    { id: 5, name: "Suspenders", emoji: "👖", description: "Pants up, code down!" },
+    { id: 6, name: "Bow Tie", emoji: "🎀", description: "Looking sharp (and nerdy)!" },
+    { id: 7, name: "Inhaler", emoji: "💨", description: "Allergic to sports!" },
+    { id: 8, name: "Calculator Watch", emoji: "⌚", description: "Time to compute!" },
+    { id: 9, name: "Taped Glasses", emoji: "🔧", description: "Battle scars of a true nerd!" },
+    { id: 10, name: "PhD in Nerdology", emoji: "🎓", description: "You've achieved ultimate nerd status!" }
+  ],
+  weeks: [
+    {
+      title: "Week 1: Getting Started with Python",
+      description: "Setup, variables, and basic programs",
+      tools: [
+        { name: "Python 3.x", url: "https://www.python.org/downloads/", description: "Download and install the latest version" },
+        { name: "VS Code", url: "https://code.visualstudio.com/", description: "Free code editor - install Python extension after setup" },
+        { name: "Terminal/Command Prompt", url: "", description: "Built into your computer - learn to open it" }
+      ],
+      days: [
+        { day: 1, title: "Install Python & First Program", content: "Install Python and VS Code. Write your first 'Hello, World!' program.", exercise: "Create a program that prints your name and favorite color" },
+        { day: 2, title: "Variables & Data Types", content: "Learn about strings, numbers, and how to store data in variables.", exercise: "Create variables for your age, city, and hobby, then print them" },
+        { day: 3, title: "User Input & Output", content: "Get input from users and display customized messages.", exercise: "Ask the user their name and greet them personally" },
+        { day: 4, title: "Basic Math & String Operations", content: "Perform calculations and combine text in interesting ways.", exercise: "Build a tip calculator that asks for bill amount and tip percentage" },
+        { day: 5, title: "If/Else Statements", content: "Make programs that make decisions based on conditions.", exercise: "Create a program that checks if a number is positive, negative, or zero" },
+        { day: 6, title: "Comparison & Logical Operators", content: "Compare values and combine conditions.", exercise: "Build a simple age checker (child, teen, adult, senior)" },
+        { day: 7, title: "Mini Project: Adventure Game", content: "Combine everything to create a choose-your-own-adventure story.", exercise: "Create a 3-choice adventure with different endings" }
+      ],
+      test: {
+        title: "Week 1 Test: Age Response Program",
+        description: "Create a program that asks for someone's age and gives different responses: under 13 (child activities), 13-19 (teen activities), 20-64 (adult activities), 65+ (senior activities)",
+        passingCriteria: "Must use input, if/else statements, and provide 4 different responses"
+      }
+    },
+    {
+      title: "Week 2: Loops and Lists",
+      description: "Repetition and organizing data",
+      tools: [
+        { name: "Python & VS Code", url: "", description: "Same tools from Week 1 - make sure they're working well" }
+      ],
+      days: [
+        { day: 8, title: "While Loops", content: "Learn to repeat code while a condition is true.", exercise: "Count from 1 to 20, printing only even numbers" },
+        { day: 9, title: "For Loops", content: "Loop a specific number of times or through sequences.", exercise: "Print a multiplication table for any number" },
+        { day: 10, title: "Loop Control (break/continue)", content: "Control loop flow with break and continue statements.", exercise: "Create a number guessing game (1-100)" },
+        { day: 11, title: "Introduction to Lists", content: "Store multiple items in a single variable.", exercise: "Create a list of 5 favorite foods and print each one" },
+        { day: 12, title: "List Operations", content: "Add, remove, and modify list items.", exercise: "Build a shopping list program (add/remove items)" },
+        { day: 13, title: "Looping Through Lists", content: "Combine loops and lists for powerful programs.", exercise: "Calculate the average of numbers in a list" },
+        { day: 14, title: "Mini Project: To-Do List", content: "Build a complete to-do list application.", exercise: "Create a to-do app with add, remove, view, and mark complete features" }
+      ],
+      test: {
+        title: "Week 2 Test: Movie Collection Manager",
+        description: "Build a program that stores favorite movies in a list. Allow users to: add movies, remove movies, view all movies, and see total count. Use a loop to keep the program running until user quits.",
+        passingCriteria: "Must use lists, loops, and at least 4 menu options"
+      }
+    },
+    {
+      title: "Week 3: Functions and Organization",
+      description: "Reusable code and better structure",
+      tools: [
+        { name: "Python & VS Code", url: "", description: "Continue with existing setup" }
+      ],
+      days: [
+        { day: 15, title: "What Are Functions?", content: "Learn why functions make code better and more reusable.", exercise: "Create a function that prints a greeting" },
+        { day: 16, title: "Functions with Parameters", content: "Pass information to functions to make them flexible.", exercise: "Create a function that calculates area of a rectangle" },
+        { day: 17, title: "Return Values", content: "Get results back from functions.", exercise: "Build temperature converter functions (C to F, F to C)" },
+        { day: 18, title: "Multiple Parameters", content: "Pass multiple pieces of information to functions.", exercise: "Create a function that calculates BMI (weight, height)" },
+        { day: 19, title: "Default Values & Scope", content: "Set default parameters and understand variable scope.", exercise: "Create a greeting function with default language parameter" },
+        { day: 20, title: "Organizing Code with Functions", content: "Structure programs using multiple functions.", exercise: "Refactor previous to-do list using functions" },
+        { day: 21, title: "Mini Project: RPG Combat System", content: "Build a text RPG with attack, defend, and heal functions.", exercise: "Create a 2-player battle system with health points" }
+      ],
+      test: {
+        title: "Week 3 Test: Banking System",
+        description: "Create a simple banking program with at least 5 functions: create_account, deposit, withdraw, check_balance, and show_menu. Functions should work together to create a complete system.",
+        passingCriteria: "Must have 5+ functions, parameters, return values, and proper organization"
+      }
+    },
+    {
+      title: "Week 4: Dictionaries and Files",
+      description: "Advanced data structures and persistence",
+      tools: [
+        { name: "Python & VS Code", url: "", description: "Continue with existing setup" },
+        { name: "Text files for practice", url: "", description: "Create some .txt files to practice reading/writing" }
+      ],
+      days: [
+        { day: 22, title: "Introduction to Dictionaries", content: "Store data in key-value pairs for easy access.", exercise: "Create a dictionary of contact info (name, phone, email)" },
+        { day: 23, title: "Dictionary Operations", content: "Add, modify, and remove dictionary items.", exercise: "Build a simple phonebook with add/update/delete" },
+        { day: 24, title: "Looping Through Dictionaries", content: "Access all keys, values, or both in a dictionary.", exercise: "Create a grade calculator (students and their scores)" },
+        { day: 25, title: "Reading Files", content: "Load data from text files into your programs.", exercise: "Read a text file and count the words" },
+        { day: 26, title: "Writing to Files", content: "Save program data to files.", exercise: "Create a program that saves user input to a file" },
+        { day: 27, title: "Appending and File Modes", content: "Add to existing files without overwriting.", exercise: "Build a simple logging system" },
+        { day: 28, title: "Mini Project: Journal App", content: "Create a journal that saves entries with dates.", exercise: "Build a journal with view, add, and search features" }
+      ],
+      test: {
+        title: "Week 4 Test: Address Book with File Storage",
+        description: "Create an address book that stores contacts (name, phone, email, address) in a dictionary, saves them to a file, and loads them when the program starts. Include add, delete, search, and view all functions.",
+        passingCriteria: "Must use dictionaries, file operations, and persist data between sessions"
+      }
+    },
+    {
+      title: "Week 5: Error Handling & Debugging",
+      description: "Make robust, crash-proof programs",
+      tools: [
+        { name: "Python & VS Code", url: "", description: "Continue with existing setup" }
+      ],
+      days: [
+        { day: 29, title: "Understanding Errors", content: "Learn to read and understand error messages.", exercise: "Fix 5 programs with intentional errors" },
+        { day: 30, title: "Try/Except Blocks", content: "Catch and handle errors gracefully.", exercise: "Make a calculator that handles division by zero" },
+        { day: 31, title: "Specific Error Types", content: "Handle different errors differently.", exercise: "Create input validation for age (must be number, must be positive)" },
+        { day: 32, title: "Debugging with Print", content: "Use print statements to track program flow.", exercise: "Debug a complex loop program" },
+        { day: 33, title: "Common Mistakes", content: "Learn the most frequent beginner errors and solutions.", exercise: "Fix 10 common coding mistakes" },
+        { day: 34, title: "Code Organization Best Practices", content: "Write clean, readable, maintainable code.", exercise: "Refactor messy code to be clean and organized" },
+        { day: 35, title: "Mini Project: Debug Challenge", content: "Fix a complex program with multiple bugs.", exercise: "Debug a game with 15 hidden errors" }
+      ],
+      test: {
+        title: "Week 5 Test: Robust Calculator",
+        description: "Build a calculator that never crashes. It should handle: non-numeric input, division by zero, invalid operations, and negative numbers where appropriate. Add error handling to every possible failure point.",
+        passingCriteria: "Must have comprehensive error handling and never crash regardless of input"
+      }
+    },
+    {
+      title: "Week 6: HTML & CSS Basics",
+      description: "Building and styling web pages",
+      tools: [
+        { name: "VS Code", url: "https://code.visualstudio.com/", description: "Same editor - works for HTML/CSS too!" },
+        { name: "Web Browser", url: "", description: "Chrome, Firefox, or Edge - you already have one!" },
+        { name: "Live Server Extension", url: "", description: "Install in VS Code for instant preview (search Extensions for 'Live Server')" }
+      ],
+      days: [
+        { day: 36, title: "HTML Structure", content: "Learn basic HTML tags and page structure.", exercise: "Create a simple webpage about yourself" },
+        { day: 37, title: "HTML Text & Links", content: "Format text and create hyperlinks.", exercise: "Build a page with headings, paragraphs, and links to 5 favorite sites" },
+        { day: 38, title: "Images & Lists", content: "Add images and create ordered/unordered lists.", exercise: "Create a recipe page with ingredients list and photos" },
+        { day: 39, title: "Introduction to CSS", content: "Style your pages with colors and fonts.", exercise: "Add CSS to your personal page (colors, fonts, sizes)" },
+        { day: 40, title: "CSS Classes & IDs", content: "Target specific elements for styling.", exercise: "Create a styled blog post with different text styles" },
+        { day: 41, title: "CSS Layout Basics", content: "Control spacing, margins, and padding.", exercise: "Build a styled card component" },
+        { day: 42, title: "Mini Project: Portfolio Page", content: "Create a complete portfolio website with multiple sections.", exercise: "Build a portfolio with About, Projects, and Contact sections" }
+      ],
+      test: {
+        title: "Week 6 Test: Multi-Page Hobby Website",
+        description: "Create a 3-page website about your favorite hobby: Home page (introduction), Gallery page (images), Resources page (links and information). Must include navigation menu, images, styled text, and consistent design across all pages.",
+        passingCriteria: "Must have 3+ pages, navigation, images, and comprehensive CSS styling"
+      }
+    },
+    {
+      title: "Week 7: JavaScript & Interactivity",
+      description: "Making web pages interactive",
+      tools: [
+        { name: "VS Code", url: "", description: "Continue with existing setup" },
+        { name: "Web Browser", url: "", description: "Same browser as Week 6" },
+        { name: "Browser DevTools", url: "", description: "Press F12 in your browser - built-in debugging tool" }
+      ],
+      days: [
+        { day: 43, title: "JavaScript Basics", content: "Variables and functions in JavaScript.", exercise: "Create a script that shows an alert with your name" },
+        { day: 44, title: "DOM Manipulation", content: "Change webpage content with JavaScript.", exercise: "Create a button that changes page text when clicked" },
+        { day: 45, title: "Event Listeners", content: "Respond to user clicks and actions.", exercise: "Build a counter that increases/decreases with buttons" },
+        { day: 46, title: "Working with Forms", content: "Get user input from form fields.", exercise: "Create a form that displays user input on the page" },
+        { day: 47, title: "Conditional Logic in JS", content: "Make interactive decisions based on user actions.", exercise: "Build a simple eligibility checker" },
+        { day: 48, title: "Simple Animations", content: "Add visual effects to your pages.", exercise: "Create a button that changes color and size on hover" },
+        { day: 49, title: "Mini Project: Quiz Game", content: "Build an interactive quiz with scoring.", exercise: "Create a 5-question quiz with instant feedback and final score" }
+      ],
+      test: {
+        title: "Week 7 Test: Interactive Calculator Webpage",
+        description: "Build a web-based calculator with buttons for numbers 0-9 and operations (+, -, ×, ÷). Display should show current input and result. Must handle all operations and clear function. Style it attractively.",
+        passingCriteria: "Must work correctly, have good design, and handle edge cases"
+      }
+    },
+    {
+      title: "Week 8: Flask & Web Servers",
+      description: "Python-powered websites",
+      tools: [
+        { name: "Python & VS Code", url: "", description: "Your existing Python setup" },
+        { name: "Flask", url: "", description: "Install via terminal: pip install flask" },
+        { name: "Web Browser", url: "", description: "To view your Flask websites" }
+      ],
+      days: [
+        { day: 50, title: "Installing Flask", content: "Set up Flask and create your first server.", exercise: "Create a 'Hello World' Flask app" },
+        { day: 51, title: "Routes & URLs", content: "Create multiple pages in your Flask app.", exercise: "Build a Flask app with 3 different pages" },
+        { day: 52, title: "Templates", content: "Use HTML templates with Flask.", exercise: "Create a template-based home page" },
+        { day: 53, title: "Passing Data to Templates", content: "Display dynamic content in your templates.", exercise: "Show different user names on personalized pages" },
+        { day: 54, title: "Forms in Flask", content: "Accept user input through web forms.", exercise: "Create a contact form that displays submissions" },
+        { day: 55, title: "Template Inheritance", content: "Create reusable page layouts.", exercise: "Build a base template used by multiple pages" },
+        { day: 56, title: "Mini Project: Guestbook", content: "Build a guestbook where visitors can leave messages.", exercise: "Create a guestbook with form input and message display" }
+      ],
+      test: {
+        title: "Week 8 Test: Personality Quiz Website",
+        description: "Create a Flask website with a personality quiz. First page: form with 5 questions. Second page: results showing personality type based on answers. Third page: all previous results. Must use templates and proper routing.",
+        passingCriteria: "Must have multiple routes, form handling, templates, and dynamic results"
+      }
+    },
+    {
+      title: "Week 9: Databases & Full Apps",
+      description: "Storing data permanently",
+      tools: [
+        { name: "Python, Flask & VS Code", url: "", description: "Continue with Week 8 setup" },
+        { name: "SQLite", url: "", description: "Already built into Python - no installation needed!" },
+        { name: "DB Browser for SQLite (optional)", url: "https://sqlitebrowser.org/", description: "Visual tool to view your databases" }
+      ],
+      days: [
+        { day: 57, title: "SQLite Basics", content: "Introduction to databases and SQL.", exercise: "Create a database and a simple table" },
+        { day: 58, title: "CRUD Operations", content: "Create, Read, Update, Delete data.", exercise: "Practice SQL commands for data manipulation" },
+        { day: 59, title: "Connecting Flask to Database", content: "Use databases in your Flask apps.", exercise: "Create a Flask app that reads from a database" },
+        { day: 60, title: "Saving Form Data", content: "Store user submissions in a database.", exercise: "Build a form that saves data to SQLite" },
+        { day: 61, title: "Displaying Database Content", content: "Show database content on web pages.", exercise: "Create a page that lists all database entries" },
+        { day: 62, title: "Update & Delete Features", content: "Add full CRUD functionality to your app.", exercise: "Add edit and delete buttons to your list" },
+        { day: 63, title: "Mini Project: Blog Platform", content: "Build a simple blog with posts stored in database.", exercise: "Create blog with add, view, edit, delete posts" }
+      ],
+      test: {
+        title: "Week 9 Test: Note-Taking Web App",
+        description: "Build a complete note-taking application. Features: create new notes (title + content), view all notes, edit existing notes, delete notes, search notes by title. All data must persist in SQLite database. Must have clean design.",
+        passingCriteria: "Full CRUD functionality, database persistence, search feature, good UI"
+      }
+    },
+    {
+      title: "Week 10: Final Project",
+      description: "Build your capstone application",
+      tools: [
+        { name: "All previous tools", url: "", description: "Python, VS Code, Flask, SQLite - everything you've learned!" },
+        { name: "Git (optional)", url: "https://git-scm.com/", description: "Version control for your project" },
+        { name: "GitHub (optional)", url: "https://github.com/", description: "Share your project online" }
+      ],
+      days: [
+        { day: 64, title: "Project Planning", content: "Choose your project and plan features.", exercise: "Write project proposal with feature list" },
+        { day: 65, title: "Design & Structure", content: "Create wireframes and database design.", exercise: "Sketch page layouts and plan database tables" },
+        { day: 66, title: "Setup & Foundation", content: "Set up project structure and basic routes.", exercise: "Create project folder, templates, and main routes" },
+        { day: 67, title: "Core Features Day 1", content: "Build main functionality.", exercise: "Implement primary features" },
+        { day: 68, title: "Core Features Day 2", content: "Continue building features.", exercise: "Complete secondary features" },
+        { day: 69, title: "Styling & Polish", content: "Make it look professional.", exercise: "Add CSS, improve layouts, fix bugs" },
+        { day: 70, title: "Final Testing & Documentation", content: "Test everything and write README.", exercise: "Test all features, write documentation, celebrate!" }
+      ],
+      test: {
+        title: "Final Project Presentation",
+        description: "Choose and build one complete project: 1) E-commerce site (products, cart, checkout), 2) Social media clone (posts, likes, comments), 3) Recipe manager (recipes, ingredients, search), 4) Budget tracker (income, expenses, reports), or 5) Game with leaderboard",
+        passingCriteria: "Working application, database, multiple features, good design, documentation"
+      }
+    }
+  ]
+};
+
+const CodingCourse = () => {
+  const [currentWeek, setCurrentWeek] = useState(0);
+  const [currentDay, setCurrentDay] = useState(0);
+  const [completedDays, setCompletedDays] = useState([]);
+  const [showTest, setShowTest] = useState(false);
+  const [passedTests, setPassedTests] = useState([]);
+  const [view, setView] = useState('overview');
+  const [showReward, setShowReward] = useState(false);
+  const [currentReward, setCurrentReward] = useState(null);
+
+  useEffect(() => {
+    const loadProgress = async () => {
+      try {
+        const completed = await window.storage.get('completed-days');
+        const tests = await window.storage.get('passed-tests');
+        if (completed) setCompletedDays(JSON.parse(completed.value));
+        if (tests) setPassedTests(JSON.parse(tests.value));
+      } catch (error) {
+        setCompletedDays([]);
+        setPassedTests([]);
+      }
+    };
+    loadProgress();
+  }, []);
+
+  const saveProgress = async (days, tests) => {
+    try {
+      await window.storage.set('completed-days', JSON.stringify(days));
+      await window.storage.set('passed-tests', JSON.stringify(tests));
+    } catch (error) {
+      console.error('Failed to save progress:', error);
+    }
+  };
+
+  const markDayComplete = (weekIndex, dayIndex) => {
+    const dayId = `${weekIndex}-${dayIndex}`;
+    if (!completedDays.includes(dayId)) {
+      const newCompleted = [...completedDays, dayId];
+      setCompletedDays(newCompleted);
+      saveProgress(newCompleted, passedTests);
+    }
+  };
+
+  const markTestPassed = (weekIndex) => {
+    if (!passedTests.includes(weekIndex)) {
+      const newPassed = [...passedTests, weekIndex];
+      setPassedTests(newPassed);
+      saveProgress(completedDays, newPassed);
+      
+      // Show nerd reward
+      const reward = courseData.nerdRewards[weekIndex];
+      setCurrentReward(reward);
+      setShowReward(true);
+    }
+  };
+
+  const isDayComplete = (weekIndex, dayIndex) => {
+    return completedDays.includes(`${weekIndex}-${dayIndex}`);
+  };
+
+  const isTestPassed = (weekIndex) => {
+    return passedTests.includes(weekIndex);
+  };
+
+  const getWeekProgress = (weekIndex) => {
+    const week = courseData.weeks[weekIndex];
+    const completed = week.days.filter((_, dayIndex) => isDayComplete(weekIndex, dayIndex)).length;
+    return Math.round((completed / week.days.length) * 100);
+  };
+
+  const getTotalProgress = () => {
+    const totalDays = courseData.weeks.reduce((sum, week) => sum + week.days.length, 0);
+    return Math.round((completedDays.length / totalDays) * 100);
+  };
+
+  // Reward Modal Component
+  const RewardModal = () => {
+    if (!showReward || !currentReward) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center animate-bounce-in shadow-2xl">
+          <div className="text-8xl mb-4">{currentReward.emoji}</div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Nerd Reward Unlocked!</h2>
+          <h3 className="text-2xl font-semibold text-indigo-600 mb-3">{currentReward.name}</h3>
+          <p className="text-gray-600 text-lg mb-6">{currentReward.description}</p>
+          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-4 mb-6">
+            <p className="text-yellow-800 font-semibold">🎉 Your nerd transformation is progressing! 🎉</p>
+          </div>
+          <button
+            onClick={() => {
+              setShowReward(false);
+              setView('overview');
+            }}
+            className="px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition-all"
+          >
+            Awesome! Continue Learning
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  if (view === 'lesson') {
+    const week = courseData.weeks[currentWeek];
+    const day = week.days[currentDay];
+    const dayId = `${currentWeek}-${currentDay}`;
+    const isComplete = completedDays.includes(dayId);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => setView('overview')}
+            className="mb-6 text-indigo-600 hover:text-indigo-800 flex items-center gap-2"
+          >
+            <ChevronLeft size={20} />
+            Back to Overview
+          </button>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-sm text-indigo-600 font-semibold mb-1">{week.title}</h3>
+                <h1 className="text-3xl font-bold text-gray-900">Day {day.day}: {day.title}</h1>
+              </div>
+              {isComplete && (
+                <div className="text-green-500">
+                  <CheckCircle size={32} />
+                </div>
+              )}
+            </div>
+
+            <div className="prose max-w-none mb-8">
+              <div className="bg-indigo-50 p-6 rounded-xl mb-6">
+                <h3 className="text-lg font-semibold text-indigo-900 mb-3 flex items-center gap-2">
+                  <Book size={20} />
+                  Today's Lesson
+                </h3>
+                <p className="text-gray-700 leading-relaxed">{day.content}</p>
+              </div>
+
+              <div className="bg-green-50 p-6 rounded-xl">
+                <h3 className="text-lg font-semibold text-green-900 mb-3 flex items-center gap-2">
+                  <Code size={20} />
+                  Practice Exercise
+                </h3>
+                <p className="text-gray-700 leading-relaxed">{day.exercise}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-6 border-t">
+              <button
+                onClick={() => {
+                  if (currentDay > 0) {
+                    setCurrentDay(currentDay - 1);
+                  } else if (currentWeek > 0) {
+                    setCurrentWeek(currentWeek - 1);
+                    setCurrentDay(courseData.weeks[currentWeek - 1].days.length - 1);
+                  }
+                }}
+                disabled={currentWeek === 0 && currentDay === 0}
+                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <ChevronLeft size={20} />
+                Previous
+              </button>
+
+              <button
+                onClick={() => {
+                  markDayComplete(currentWeek, currentDay);
+                }}
+                className={`px-6 py-3 rounded-lg font-semibold ${
+                  isComplete
+                    ? 'bg-green-500 text-white'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                }`}
+              >
+                {isComplete ? '✓ Completed' : 'Mark Complete'}
+              </button>
+
+              <button
+                onClick={() => {
+                  if (currentDay < week.days.length - 1) {
+                    setCurrentDay(currentDay + 1);
+                  } else if (currentWeek < courseData.weeks.length - 1) {
+                    setView('overview');
+                  }
+                }}
+                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+              >
+                Next
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (view === 'test') {
+    const week = courseData.weeks[currentWeek];
+    const isPassed = isTestPassed(currentWeek);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => setView('overview')}
+            className="mb-6 text-purple-600 hover:text-purple-800 flex items-center gap-2"
+          >
+            <ChevronLeft size={20} />
+            Back to Overview
+          </button>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-sm text-purple-600 font-semibold mb-1">{week.title}</h3>
+                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                  <Trophy className="text-purple-500" size={32} />
+                  {week.test.title}
+                </h1>
+              </div>
+              {isPassed && (
+                <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold">
+                  ✓ Passed
+                </div>
+              )}
+            </div>
+
+            <div className="bg-purple-50 p-6 rounded-xl mb-6">
+              <h3 className="text-lg font-semibold text-purple-900 mb-3">Challenge Description</h3>
+              <p className="text-gray-700 leading-relaxed mb-4">{week.test.description}</p>
+              
+              <div className="bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                <h4 className="font-semibold text-purple-900 mb-2">Passing Criteria:</h4>
+                <p className="text-gray-700">{week.test.passingCriteria}</p>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 p-6 rounded-xl mb-6">
+              <h3 className="text-lg font-semibold text-yellow-900 mb-3">Tips for Success</h3>
+              <ul className="space-y-2 text-gray-700">
+                <li>• Take your time - this is about learning, not speed</li>
+                <li>• Review the week's lessons before starting</li>
+                <li>• Test your code frequently as you build</li>
+                <li>• Don't be afraid to look back at examples</li>
+                <li>• Break the problem into smaller parts</li>
+              </ul>
+            </div>
+
+            <button
+              onClick={() => markTestPassed(currentWeek)}
+              className={`w-full py-4 rounded-lg font-semibold text-lg ${
+                isPassed
+                  ? 'bg-green-500 text-white'
+                  : 'bg-purple-600 text-white hover:bg-purple-700'
+              }`}
+            >
+              {isPassed ? '✓ Test Passed!' : 'Mark Test as Passed'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
+      <RewardModal />
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold text-gray-900 mb-3">Turning Ant into a Nerd Day by Day</h1>
+          <p className="text-xl text-gray-600">10-Week Coding Journey • 1 Hour Daily</p>
+          
+          <div className="mt-6 bg-white rounded-2xl p-6 shadow-lg inline-block">
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-indigo-600">{getTotalProgress()}%</div>
+                <div className="text-sm text-gray-600">Overall Progress</div>
+              </div>
+              <div className="h-12 w-px bg-gray-300"></div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-green-600">{completedDays.length}</div>
+                <div className="text-sm text-gray-600">Days Completed</div>
+              </div>
+              <div className="h-12 w-px bg-gray-300"></div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-purple-600">{passedTests.length}</div>
+                <div className="text-sm text-gray-600">Tests Passed</div>
+              </div>
+            </div>
+          </div>
+
+          {passedTests.length > 0 && (
+            <div className="mt-6 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-2xl p-6 shadow-lg">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">🏆 Your Nerd Collection 🏆</h2>
+              <div className="flex flex-wrap justify-center gap-4">
+                {passedTests.map((testIndex) => {
+                  const reward = courseData.nerdRewards[testIndex];
+                  return (
+                    <div
+                      key={testIndex}
+                      className="bg-white rounded-xl p-4 shadow-md text-center min-w-[120px] hover:scale-105 transition-transform"
+                    >
+                      <div className="text-5xl mb-2">{reward.emoji}</div>
+                      <div className="text-xs font-semibold text-gray-700">{reward.name}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="grid gap-6">
+          {courseData.weeks.map((week, weekIndex) => {
+            const progress = getWeekProgress(weekIndex);
+            const allDaysComplete = week.days.every((_, dayIndex) => isDayComplete(weekIndex, dayIndex));
+            const testPassed = isTestPassed(weekIndex);
+
+            return (
+              <div key={weekIndex} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-2xl font-bold">{week.title}</h2>
+                    {testPassed && (
+                      <div className="bg-green-400 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                        <Star size={16} fill="white" />
+                        Test Passed
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-indigo-100 mb-4">{week.description}</p>
+                  
+                  {week.tools && week.tools.length > 0 && (
+                    <div className="bg-white/10 rounded-lg p-4 mb-4">
+                      <h3 className="font-semibold mb-2 text-sm">🛠️ Tools Needed:</h3>
+                      <div className="space-y-2">
+                        {week.tools.map((tool, idx) => (
+                          <div key={idx} className="text-sm">
+                            <span className="font-medium">{tool.name}</span>
+                            {tool.url && (
+                              <a 
+                                href={tool.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="ml-2 underline hover:text-yellow-200"
+                              >
+                                Download
+                              </a>
+                            )}
+                            <p className="text-xs text-indigo-100 mt-0.5">{tool.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="bg-white/20 rounded-full h-3 overflow-hidden">
+                    <div 
+                      className="bg-white h-full transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-right text-sm mt-1">{progress}% Complete</div>
+                </div>
+
+                <div className="p-6">
+                  <div className="grid grid-cols-7 gap-3 mb-4">
+                    {week.days.map((day, dayIndex) => {
+                      const isComplete = isDayComplete(weekIndex, dayIndex);
+                      return (
+                        <button
+                          key={dayIndex}
+                          onClick={() => {
+                            setCurrentWeek(weekIndex);
+                            setCurrentDay(dayIndex);
+                            setView('lesson');
+                          }}
+                          className={`aspect-square rounded-xl flex flex-col items-center justify-center p-2 transition-all ${
+                            isComplete
+                              ? 'bg-green-500 text-white shadow-md'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {isComplete ? (
+                            <CheckCircle size={20} />
+                          ) : (
+                            <Circle size={20} />
+                          )}
+                          <span className="text-xs font-semibold mt-1">{day.day}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setCurrentWeek(weekIndex);
+                      setView('test');
+                    }}
+                    disabled={!allDaysComplete}
+                    className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${
+                      testPassed
+                        ? 'bg-green-500 text-white'
+                        : allDaysComplete
+                        ? 'bg-purple-600 text-white hover:bg-purple-700'
+                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {testPassed ? (
+                      <>
+                        <CheckCircle size={20} />
+                        Test Passed!
+                      </>
+                    ) : (
+                      <>
+                        {allDaysComplete ? <Trophy size={20} /> : <Lock size={20} />}
+                        {allDaysComplete ? 'Take Week Test' : 'Complete all days to unlock test'}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 bg-white rounded-2xl p-6 shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Study Tips</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-blue-900 mb-2">Daily Routine</h3>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• 10 min: Review previous day</li>
+                <li>• 35 min: New material & practice</li>
+                <li>• 15 min: Extra practice/projects</li>
+              </ul>
+            </div>
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-green-900 mb-2">Success Strategies</h3>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Code every day (consistency wins!)</li>
+                <li>• Type examples yourself</li>
+                <li>• Google error messages</li>
+                <li>• Take breaks when frustrated</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CodingCourse;
+
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-bounce-in {
+    animation: bounce-in 0.6s ease-out;
+  }
+`;
+document.head.appendChild(style);
