@@ -1,176 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turning Ant into a Nerd Day by Day</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
-    
-    <div class="max-w-6xl mx-auto p-6">
-        <div class="text-center mb-8">
-            <h1 class="text-5xl font-bold text-gray-900 mb-3">Turning Ant into a Nerd Day by Day</h1>
-            <p class="text-xl text-gray-600">Week 1: Python Basics • 1 Hour Daily</p>
-            
-            <div class="mt-6 bg-white rounded-2xl p-6 shadow-lg inline-block">
-                <div class="flex items-center gap-4">
-                    <div class="text-center">
-                        <div id="progress" class="text-4xl font-bold text-indigo-600">0%</div>
-                        <div class="text-sm text-gray-600">Progress</div>
-                    </div>
-                    <div class="h-12 w-px bg-gray-300"></div>
-                    <div class="text-center">
-                        <div id="completed" class="text-4xl font-bold text-green-600">0</div>
-                        <div class="text-sm text-gray-600">Days Done</div>
-                    </div>
-                    <div class="h-12 w-px bg-gray-300"></div>
-                    <div class="text-center">
-                        <div id="remaining" class="text-4xl font-bold text-orange-600">7</div>
-                        <div class="text-sm text-gray-600">Days Left</div>
-                    </div>
-                </div>
-            </div>
-            
-            <button id="resetBtn" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-semibold text-sm">
-                🔄 Reset Progress
-            </button>
-        </div>
-
-        <!-- Week Overview -->
-        <div id="overview">
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                    <h3 class="font-bold text-blue-900 mb-2">🛠️ Tools Needed for Week 1:</h3>
-                    <div class="text-sm text-blue-800">
-                        <p class="mb-2">Before starting, download these (covered in Day 1):</p>
-                        <ul class="space-y-1">
-                            <li>• <a href="https://www.python.org/downloads/" target="_blank" class="underline hover:text-blue-600">Python 3.x</a> - The programming language</li>
-                            <li>• <a href="https://code.visualstudio.com/" target="_blank" class="underline hover:text-blue-600">VS Code</a> - Code editor (free)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-2xl shadow-lg p-6">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Week 1: Getting Started with Python</h2>
-                <p class="text-gray-600 mb-6">Learn the fundamentals: variables, input/output, conditions, and build your first game!</p>
-                
-                <div class="grid grid-cols-7 gap-3" id="dayButtons"></div>
-                
-                <button id="testBtn" class="mt-6 w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
-                    🏆 Take Week Test
-                </button>
-            </div>
-        </div>
-
-        <!-- Lesson View -->
-        <div id="lesson" class="hidden">
-            <button id="backBtn" class="mb-6 text-indigo-600 hover:text-indigo-800 font-semibold text-lg">← Back</button>
-            
-            <div class="bg-white rounded-2xl shadow-xl p-8">
-                <h1 id="lessonTitle" class="text-3xl font-bold text-gray-900 mb-6"></h1>
-                
-                <div class="bg-indigo-50 p-6 rounded-xl mb-6">
-                    <h3 class="text-lg font-bold text-indigo-900 mb-3">📚 Lesson</h3>
-                    <div id="lessonText" class="text-gray-700 whitespace-pre-wrap"></div>
-                </div>
-                
-                <div class="bg-green-50 p-6 rounded-xl mb-6">
-                    <h3 class="text-lg font-bold text-green-900 mb-3">💻 Exercise</h3>
-                    <p id="exercise" class="text-gray-800 font-semibold mb-4"></p>
-                    
-                    <button id="hintBtn" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 mr-2">💡 Hint</button>
-                    <button id="solBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">🔍 Solution</button>
-                    
-                    <div id="hint" class="hidden mt-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded"></div>
-                    <pre id="solution" class="hidden mt-4 p-4 bg-gray-800 text-green-400 rounded overflow-x-auto"></pre>
-                </div>
-                
-                <div class="flex justify-between">
-                    <button id="prevBtn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">← Previous</button>
-                    <button id="completeBtn" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Mark Complete</button>
-                    <button id="nextBtn" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Next →</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const days = [
-            {title:"Day 1: Install Python & First Program",lesson:"Welcome to coding!\n\nStep 1: Install Python\n→ Go to python.org/downloads\n→ Download Python 3.x (latest version)\n→ Run installer\n→ ✅ CHECK 'Add Python to PATH'\n→ Click Install\n\nStep 2: Install VS Code\n→ Go to code.visualstudio.com\n→ Download for your OS\n→ Install it\n→ Open VS Code\n→ Install Python extension (search 'Python' in Extensions)\n\nStep 3: Write your first program:\n\nprint(\"Hello, World!\")\n\nThe print() function displays text. Text goes in quotes.\n\nTo run:\n→ Save file as hello.py\n→ Right-click → Run Python File",exercise:"Print your name and favorite color",hint:"Use two print() statements with text in quotes",solution:'print("My name is Alex")\nprint("My favorite color is blue")'},
-            {title:"Day 2: Variables & Data Types",lesson:"Variables store information.\n\nname = \"Alice\"\nage = 25\nprice = 19.99\n\nRules:\n- Use letters, numbers, underscore\n- Start with letter\n- No spaces\n\nData types:\n- Strings: \"text\"\n- Integers: 42\n- Floats: 3.14",exercise:"Create variables for age, city, and hobby",hint:"Use = to assign values. Strings need quotes, numbers don't",solution:'age = 25\ncity = "London"\nhobby = "coding"\nprint(age, city, hobby)'},
-            {title:"Day 3: User Input & Output",lesson:"Get user input:\n\nname = input(\"Your name? \")\nprint(\"Hello\", name)\n\nConvert to numbers:\nage = int(input(\"Age? \"))\n\nF-strings (best way):\nprint(f\"Hi {name}, you are {age}\")",exercise:"Ask user's name and greet them",hint:"Use input() to get name, then print a greeting",solution:'name = input("What is your name? ")\nprint(f"Hello, {name}! Nice to meet you!")'},
-            {title:"Day 4: Math & String Operations",lesson:"Math operators:\n+ addition\n- subtraction\n* multiplication\n/ division\n** power\n% remainder\n\nString operations:\nfirst + last  # combine\n\"ha\" * 3     # repeat\nname.upper()  # UPPERCASE",exercise:"Build a tip calculator",hint:"Get bill amount, calculate tip as bill * percent / 100",solution:'bill = float(input("Bill: £"))\ntip_pct = float(input("Tip %: "))\ntip = bill * tip_pct / 100\nprint(f"Tip: £{tip:.2f}")\nprint(f"Total: £{bill + tip:.2f}")'},
-            {title:"Day 5: If/Else Statements",lesson:"Make decisions:\n\nif age >= 18:\n    print(\"Can vote\")\nelse:\n    print(\"Too young\")\n\nMultiple conditions:\nif score >= 90:\n    print(\"A\")\nelif score >= 80:\n    print(\"B\")\nelse:\n    print(\"C\")\n\nIndentation matters!",exercise:"Check if number is positive, negative, or zero",hint:"Use if/elif/else with >, <, and ==",solution:'num = float(input("Number: "))\nif num > 0:\n    print("Positive")\nelif num < 0:\n    print("Negative")\nelse:\n    print("Zero")'},
-            {title:"Day 6: Logical Operators",lesson:"Combine conditions:\n\nand - both true\nif age >= 18 and has_ticket:\n    print(\"Enter\")\n\nor - one true\nif day == \"Sat\" or day == \"Sun\":\n    print(\"Weekend!\")\n\nnot - reverse\nif not raining:\n    print(\"Go out\")",exercise:"Age category checker",hint:"Use if/elif with age ranges: <13, 13-19, 20-64, 65+",solution:'age = int(input("Age: "))\nif age < 13:\n    print("Child")\nelif 13 <= age < 20:\n    print("Teen")\nelif 20 <= age < 65:\n    print("Adult")\nelse:\n    print("Senior")'},
-            {title:"Day 7: Adventure Game Project",lesson:"Build a text adventure!\n\nUse:\n- input() for choices\n- if/elif/else for paths\n- print() for story\n\nExample:\nchoice = input(\"Go left or right? \")\nif choice == \"left\":\n    print(\"You find treasure!\")\nelse:\n    print(\"You meet a dragon!\")",exercise:"Create 3-choice adventure with different endings",hint:"Get user choice, use if/elif/else for 3 different outcomes",solution:'print("You find 3 doors")\nchoice = input("Pick 1, 2, or 3: ")\nif choice == "1":\n    print("Dragon! GAME OVER")\nelif choice == "2":\n    print("Treasure! YOU WIN!")\nelif choice == "3":\n    print("Empty room. Try again")\nelse:\n    print("Invalid choice")'}
-        ];
-        
-        let done = JSON.parse(localStorage.getItem('done') || '[]');
-        let current = 0;
-        
-        function save() {
-            localStorage.setItem('done', JSON.stringify(done));
-            updateStats();
-        }
-        
-        function updateStats() {
-            document.getElementById('progress').textContent = Math.round(done.length / 7 * 100) + '%';
-            document.getElementById('completed').textContent = done.length;
-            document.getElementById('remaining').textContent = 7 - done.length;
-            document.getElementById('testBtn').disabled = done.length < 7;
-        }
-        
-        function showOverview() {
-            document.getElementById('overview').classList.remove('hidden');
-            document.getElementById('lesson').classList.add('hidden');
-            const btns = document.getElementById('dayButtons');
-            btns.innerHTML = days.map((d, i) => 
-                `<button onclick="showDay(${i})" class="aspect-square rounded-xl flex flex-col items-center justify-center p-2 transition-all border-2 ${done.includes(i) ? 'bg-green-500 text-white border-green-600' : 'bg-white text-gray-700 border-indigo-400 hover:bg-indigo-100'}">
-                    <span class="text-3xl">${done.includes(i) ? '✓' : '👓'}</span>
-                    <span class="text-xs font-semibold mt-1">${i+1}</span>
-                </button>`
-            ).join('');
-        }
-        
-        function showDay(i) {
-            current = i;
-            const day = days[i];
-            document.getElementById('overview').classList.add('hidden');
-            document.getElementById('lesson').classList.remove('hidden');
-            document.getElementById('lessonTitle').textContent = day.title;
-            document.getElementById('lessonText').textContent = day.lesson;
-            document.getElementById('exercise').textContent = day.exercise;
-            document.getElementById('hint').textContent = day.hint;
-            document.getElementById('hint').classList.add('hidden');
-            document.getElementById('solution').textContent = day.solution;
-            document.getElementById('solution').classList.add('hidden');
-            document.getElementById('completeBtn').textContent = done.includes(i) ? '✓ Completed' : 'Mark Complete';
-            document.getElementById('completeBtn').className = done.includes(i) ? 'px-6 py-3 bg-green-500 text-white rounded-lg' : 'px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700';
-        }
-        
-        document.getElementById('backBtn').onclick = showOverview;
-        document.getElementById('resetBtn').onclick = () => {
-            if(confirm('Reset all progress?')) {
-                done = [];
-                save();
-                showOverview();
-            }
-        };
-        document.getElementById('hintBtn').onclick = () => document.getElementById('hint').classList.toggle('hidden');
-        document.getElementById('solBtn').onclick = () => document.getElementById('solution').classList.toggle('hidden');
-        document.getElementById('completeBtn').onclick = () => {
-            if(!done.includes(current)) done.push(current);
-            save();
-            showDay(current);
-        };
-        document.getElementById('prevBtn').onclick = () => { if(current > 0) showDay(current - 1); };
-        document.getElementById('nextBtn').onclick = () => { if(current < 6) showDay(current + 1); else showOverview(); };
-        document.getElementById('testBtn').onclick = () => alert('🏆 Week 1 Test\n\nCreate a program that asks for age and gives different responses:\n- Under 13: child activities\n- 13-19: teen activities  \n- 20-64: adult activities\n- 65+: senior activities\n\nMust use input() and if/elif/else!');
-        
-        updateStats();
-        showOverview();
-    </script>
-</body>
-</html>
+Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+452291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+1452291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/96223d0c-7a64-4241-8648-ab2eefc760fe/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+1252291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+52291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+952291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/9cae42d9-2a8b-47e1-b5c3-6a9fc0f2cfe0/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+252291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+1152291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+1252291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/fe881726-1d9a-4524-ae43-16f061a14c57/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+1052291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+52291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+1152291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/baaccd3b-5b20-49de-8763-dbb3b44a9166/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+852291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+1152291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/dd591ebe-de4b-4b95-a338-d1081241b5df/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+752291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+452291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
+1452291-309d1a87cd8d8ec2.js:14 undefined
+/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/c4169920-1d59-4483-bf76-2c6ca1db4b7e/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
+(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
+52291-309d1a87cd8d8ec2.js:14 undefined
+about:srcdoc:18 cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation
+warn @ about:srcdoc:18Understand this warning
+about:srcdoc:722 Uncaught SyntaxError: Unexpected token '<'Understand this error
+352291-309d1a87cd8d8ec2.js:14 undefined
+52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
+252291-309d1a87cd8d8ec2.js:14 undefined
