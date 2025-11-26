@@ -70,54 +70,6 @@
                     Mark Complete
                 </button>
             </div>
-            
-            <div id="testArea" class="hidden">
-                <button onclick="backToOverview()" class="mb-4 text-purple-600 hover:text-purple-800 font-semibold">← Back</button>
-                <h3 class="text-3xl font-bold mb-4 text-purple-600">🏆 Week 1 Test: Age Response Program</h3>
-                
-                <div class="bg-purple-50 p-6 rounded-xl mb-4">
-                    <h4 class="font-bold text-lg mb-3">Challenge:</h4>
-                    <p class="mb-4">Create a program that asks the user for their age and gives DIFFERENT responses based on age categories:</p>
-                    <ul class="space-y-2 ml-6 list-disc">
-                        <li><strong>Under 13:</strong> "You're a child! Recommended activities: Play games, learn new hobbies"</li>
-                        <li><strong>13-19:</strong> "You're a teenager! Recommended activities: Study, sports, part-time jobs"</li>
-                        <li><strong>20-64:</strong> "You're an adult! Recommended activities: Career, family, travel"</li>
-                        <li><strong>65+:</strong> "You're a senior! Recommended activities: Relaxation, hobbies, time with family"</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500 mb-4">
-                    <h4 class="font-semibold text-purple-900 mb-2">Requirements:</h4>
-                    <ul class="space-y-1 text-sm">
-                        <li>✅ Must use <code class="bg-gray-200 px-2 py-1 rounded">input()</code> to ask for age</li>
-                        <li>✅ Must convert to integer with <code class="bg-gray-200 px-2 py-1 rounded">int()</code></li>
-                        <li>✅ Must use if/elif/else statements</li>
-                        <li>✅ Must have 4 different responses (one for each age group)</li>
-                        <li>✅ Must print clear, helpful messages</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-yellow-50 p-6 rounded-xl mb-4">
-                    <h4 class="font-bold mb-3">💡 Tips:</h4>
-                    <ul class="space-y-1 text-sm">
-                        <li>• Start by getting the age: <code class="bg-gray-200 px-2 py-1 rounded">age = int(input("Your age: "))</code></li>
-                        <li>• Use if for first condition: <code class="bg-gray-200 px-2 py-1 rounded">if age < 13:</code></li>
-                        <li>• Use elif for middle conditions with AND: <code class="bg-gray-200 px-2 py-1 rounded">elif age >= 13 and age < 20:</code></li>
-                        <li>• Use else for the last group (65+)</li>
-                        <li>• Test with different ages: 10, 16, 35, 70</li>
-                    </ul>
-                </div>
-                
-                <button onclick="showTestSolution()" class="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold mb-3">
-                    🔍 Show Solution
-                </button>
-                
-                <pre id="testSolution" class="hidden p-4 bg-gray-800 text-green-400 rounded overflow-x-auto text-sm mb-4"></pre>
-                
-                <button onclick="markTestPassed()" id="passTestBtn" class="w-full py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold text-lg">
-                    Mark Test as Passed
-                </button>
-            </div>
         </div>
     </div>
 
@@ -410,23 +362,7 @@ else:
         };
 
         let done = JSON.parse(localStorage.getItem('done') || '[]');
-        let testPassed = localStorage.getItem('testPassed') === 'true';
         let current = 0;
-
-        const testSolution = `age = int(input("How old are you? "))
-
-if age < 13:
-    print("You're a child!")
-    print("Recommended: Play games, learn new hobbies")
-elif age >= 13 and age < 20:
-    print("You're a teenager!")
-    print("Recommended: Study, sports, part-time jobs")
-elif age >= 20 and age < 65:
-    print("You're an adult!")
-    print("Recommended: Career, family, travel")
-else:
-    print("You're a senior!")
-    print("Recommended: Relaxation, hobbies, family time")`;
 
         function updateButtons() {
             for (let i = 0; i <= 6; i++) {
@@ -442,22 +378,6 @@ else:
             document.getElementById('progress').textContent = Math.round(done.length / 7 * 100) + '%';
             document.getElementById('completed').textContent = done.length;
             document.getElementById('remaining').textContent = 7 - done.length;
-            
-            // Update test button
-            const testBtn = document.getElementById('testBtn');
-            if (done.length === 7) {
-                testBtn.disabled = false;
-                if (testPassed) {
-                    testBtn.className = 'w-full py-3 bg-green-500 text-white rounded-lg font-semibold mb-4';
-                    testBtn.textContent = '✓ Week Test Passed!';
-                } else {
-                    testBtn.className = 'w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold mb-4';
-                    testBtn.textContent = '🏆 Take Week 1 Test';
-                }
-            } else {
-                testBtn.className = 'w-full py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed mb-4';
-                testBtn.textContent = `🔒 Complete all 7 days to unlock Week Test (${done.length}/7)`;
-            }
         }
 
         function showDay(i) {
@@ -483,34 +403,6 @@ else:
 
         function backToOverview() {
             document.getElementById('lessonArea').classList.add('hidden');
-            document.getElementById('testArea').classList.add('hidden');
-        }
-        
-        function showTest() {
-            if (done.length < 7) return;
-            document.getElementById('testArea').classList.remove('hidden');
-            document.getElementById('testSolution').textContent = testSolution;
-            document.getElementById('testSolution').classList.add('hidden');
-            
-            if (testPassed) {
-                document.getElementById('passTestBtn').textContent = '✓ Test Already Passed!';
-                document.getElementById('passTestBtn').className = 'w-full py-4 bg-green-500 text-white rounded-lg font-semibold text-lg';
-            } else {
-                document.getElementById('passTestBtn').textContent = 'Mark Test as Passed';
-                document.getElementById('passTestBtn').className = 'w-full py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold text-lg';
-            }
-        }
-        
-        function showTestSolution() {
-            document.getElementById('testSolution').classList.toggle('hidden');
-        }
-        
-        function markTestPassed() {
-            testPassed = true;
-            localStorage.setItem('testPassed', 'true');
-            updateButtons();
-            showTest();
-            alert('🎉 Congratulations! You completed Week 1!\n\nYou\'ve earned: 🤓 Thick-Rimmed Glasses\n\n"Classic nerd starter pack!"');
         }
 
         function showHint() {
@@ -531,11 +423,9 @@ else:
         }
 
         function resetProgress() {
-            if (confirm('Reset all progress? Cannot be undone!')) {
+            if (confirm('Reset all progress?')) {
                 done = [];
-                testPassed = false;
                 localStorage.setItem('done', JSON.stringify(done));
-                localStorage.setItem('testPassed', 'false');
                 updateButtons();
             }
         }
@@ -543,59 +433,4 @@ else:
         updateButtons();
     </script>
 </body>
-</html>Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-452291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-1452291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/96223d0c-7a64-4241-8648-ab2eefc760fe/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-1252291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-52291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-952291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/9cae42d9-2a8b-47e1-b5c3-6a9fc0f2cfe0/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-252291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-1152291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-1252291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/fe881726-1d9a-4524-ae43-16f061a14c57/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-1052291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-52291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-1152291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/baaccd3b-5b20-49de-8763-dbb3b44a9166/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-852291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-1152291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/dd591ebe-de4b-4b95-a338-d1081241b5df/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-752291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-452291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Starting completion request (1/10)
-1452291-309d1a87cd8d8ec2.js:14 undefined
-/api/organizations/a334a309-03d1-4f47-a60d-d8698a87771e/artifacts/artifact_version/c4169920-1d59-4483-bf76-2c6ca1db4b7e/tools:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
-(anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
-52291-309d1a87cd8d8ec2.js:14 undefined
-about:srcdoc:18 cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation
-warn @ about:srcdoc:18Understand this warning
-about:srcdoc:722 Uncaught SyntaxError: Unexpected token '<'Understand this error
-352291-309d1a87cd8d8ec2.js:14 undefined
-52291-309d1a87cd8d8ec2.js:14 [COMPLETION] Completion request succeeded on attempt 1
-252291-309d1a87cd8d8ec2.js:14 undefined
+</html>
