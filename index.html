@@ -1,4 +1,549 @@
-Failed to load resource: the server responded with a status of 404 ()Understand this error
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turning Ant into a Nerd Day by Day</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen p-6">
+    
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold text-gray-900 mb-3">Turning Ant into a Nerd Day by Day</h1>
+            <p class="text-xl text-gray-600">Week 1: Python Basics</p>
+            
+            <div class="mt-6 bg-white rounded-2xl p-6 shadow-lg inline-block">
+                <div class="flex items-center gap-4">
+                    <div class="text-center">
+                        <div id="progress" class="text-4xl font-bold text-indigo-600">0%</div>
+                        <div class="text-sm text-gray-600">Progress</div>
+                    </div>
+                    <div class="h-12 w-px bg-gray-300"></div>
+                    <div class="text-center">
+                        <div id="completed" class="text-4xl font-bold text-green-600">0</div>
+                        <div class="text-sm text-gray-600">Completed</div>
+                    </div>
+                    <div class="h-12 w-px bg-gray-300"></div>
+                    <div class="text-center">
+                        <div id="remaining" class="text-4xl font-bold text-orange-600">7</div>
+                        <div class="text-sm text-gray-600">Remaining</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="resetProgress()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                🔄 Reset
+            </button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Week 1: Getting Started</h2>
+            
+            <div class="grid grid-cols-7 gap-3 mb-6">
+                <button onclick="showDay(0)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn0">1</button>
+                <button onclick="showDay(1)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn1">2</button>
+                <button onclick="showDay(2)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn2">3</button>
+                <button onclick="showDay(3)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn3">4</button>
+                <button onclick="showDay(4)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn4">5</button>
+                <button onclick="showDay(5)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn5">6</button>
+                <button onclick="showDay(6)" class="aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold" id="btn6">7</button>
+            </div>
+            
+            <button onclick="showTest()" id="testBtn" disabled class="w-full py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed mb-4">
+                🔒 Complete all 7 days to unlock Week Test
+            </button>
+            
+            <div id="lessonArea" class="hidden">
+                <button onclick="backToOverview()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold">← Back</button>
+                <h3 id="lessonTitle" class="text-2xl font-bold mb-4"></h3>
+                <div id="lessonContent" class="bg-indigo-50 p-6 rounded-xl mb-4 space-y-3 text-sm leading-relaxed"></div>
+                <div class="bg-green-50 p-6 rounded-xl mb-4">
+                    <h4 class="font-bold mb-2">Exercise:</h4>
+                    <p id="exercise" class="mb-4"></p>
+                    <button onclick="showHint()" class="px-4 py-2 bg-yellow-500 text-white rounded-lg mr-2">💡 Hint</button>
+                    <button onclick="showSolution()" class="px-4 py-2 bg-blue-500 text-white rounded-lg">🔍 Solution</button>
+                    <div id="hint" class="hidden mt-4 p-4 bg-yellow-100 rounded text-sm"></div>
+                    <pre id="solution" class="hidden mt-4 p-4 bg-gray-800 text-green-400 rounded overflow-x-auto text-sm"></pre>
+                </div>
+                <button onclick="markComplete()" id="compBtn" class="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold">
+                    Mark Complete
+                </button>
+            </div>
+            
+            <div id="testArea" class="hidden">
+                <button onclick="backToOverview()" class="mb-4 text-purple-600 hover:text-purple-800 font-semibold">← Back</button>
+                <h3 class="text-3xl font-bold mb-4 text-purple-600">🏆 Week 1 Test: Age Response Program</h3>
+                
+                <div class="bg-purple-50 p-6 rounded-xl mb-4">
+                    <h4 class="font-bold text-lg mb-3">Challenge:</h4>
+                    <p class="mb-4">Create a program that asks the user for their age and gives DIFFERENT responses based on age categories:</p>
+                    <ul class="space-y-2 ml-6 list-disc">
+                        <li><strong>Under 13:</strong> "You're a child! Recommended activities: Play games, learn new hobbies"</li>
+                        <li><strong>13-19:</strong> "You're a teenager! Recommended activities: Study, sports, part-time jobs"</li>
+                        <li><strong>20-64:</strong> "You're an adult! Recommended activities: Career, family, travel"</li>
+                        <li><strong>65+:</strong> "You're a senior! Recommended activities: Relaxation, hobbies, time with family"</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500 mb-4">
+                    <h4 class="font-semibold text-purple-900 mb-2">Requirements:</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li>✅ Must use <code class="bg-gray-200 px-2 py-1 rounded">input()</code> to ask for age</li>
+                        <li>✅ Must convert to integer with <code class="bg-gray-200 px-2 py-1 rounded">int()</code></li>
+                        <li>✅ Must use if/elif/else statements</li>
+                        <li>✅ Must have 4 different responses (one for each age group)</li>
+                        <li>✅ Must print clear, helpful messages</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-yellow-50 p-6 rounded-xl mb-4">
+                    <h4 class="font-bold mb-3">💡 Tips:</h4>
+                    <ul class="space-y-1 text-sm">
+                        <li>• Start by getting the age: <code class="bg-gray-200 px-2 py-1 rounded">age = int(input("Your age: "))</code></li>
+                        <li>• Use if for first condition: <code class="bg-gray-200 px-2 py-1 rounded">if age < 13:</code></li>
+                        <li>• Use elif for middle conditions with AND: <code class="bg-gray-200 px-2 py-1 rounded">elif age >= 13 and age < 20:</code></li>
+                        <li>• Use else for the last group (65+)</li>
+                        <li>• Test with different ages: 10, 16, 35, 70</li>
+                    </ul>
+                </div>
+                
+                <button onclick="showTestSolution()" class="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold mb-3">
+                    🔍 Show Solution
+                </button>
+                
+                <pre id="testSolution" class="hidden p-4 bg-gray-800 text-green-400 rounded overflow-x-auto text-sm mb-4"></pre>
+                
+                <button onclick="markTestPassed()" id="passTestBtn" class="w-full py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold text-lg">
+                    Mark Test as Passed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lessons = {
+            0: {
+                title: "Day 1: Install Python & First Program",
+                content: `<p class="font-bold text-lg mb-2">Step 1: Install Python (5 minutes)</p>
+<p class="mb-2">1. Go to <a href="https://python.org/downloads" target="_blank" class="text-blue-600 underline">python.org/downloads</a></p>
+<p class="mb-2">2. Click the big yellow "Download Python" button</p>
+<p class="mb-2">3. Open the downloaded file</p>
+<p class="bg-yellow-100 p-2 rounded mb-2">⚠️ IMPORTANT: Tick "Add Python to PATH" before clicking Install!</p>
+
+<p class="font-bold mt-4 mb-2">Step 2: Install VS Code (5 minutes)</p>
+<p class="mb-2">1. Go to <a href="https://code.visualstudio.com" target="_blank" class="text-blue-600 underline">code.visualstudio.com</a></p>
+<p class="mb-2">2. Download and install</p>
+<p class="mb-2">3. Open VS Code, click Extensions icon, search "Python", click Install</p>
+
+<p class="font-bold mt-4 mb-2">Step 3: Your First Program!</p>
+<p class="mb-2">1. File → New File → Save as "hello.py"</p>
+<p class="mb-2">2. Type: <code class="bg-gray-200 px-2 py-1 rounded">print("Hello, World!")</code></p>
+<p class="mb-2">3. Right-click → Run Python File</p>
+
+<p class="font-bold mt-4 mb-2">What does this mean?</p>
+<p class="mb-2"><strong>print()</strong> displays things on screen</p>
+<p class="mb-2"><strong>"Hello, World!"</strong> is text (called a "string")</p>
+
+<p class="font-bold mt-4 mb-2">More Examples:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">print("Hello")        # Shows: Hello
+print(123)           # Shows: 123
+print("I love code!") # Shows: I love code!</pre>`,
+                exercise: "Write a program that prints your name and favorite color (two separate lines)",
+                hint: "Use TWO print() statements. First prints your name, second prints your color. Put text in quotes!",
+                solution: `print("My name is Alex")
+print("My favorite color is blue")
+
+# Output:
+# My name is Alex
+# My favorite color is blue`
+            },
+            1: {
+                title: "Day 2: Variables & Data Types",
+                content: `<p class="font-bold text-lg mb-2">What Are Variables?</p>
+<p class="mb-3">Variables are like labeled boxes that store information.</p>
+
+<p class="font-bold mb-2">Creating Variables:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">name = "Alice"
+age = 25
+price = 19.99</pre>
+
+<p class="mb-2"><strong>name</strong> is the variable (box label)</p>
+<p class="mb-2"><strong>=</strong> means "store"</p>
+<p class="mb-2"><strong>"Alice"</strong> is the value (what's in the box)</p>
+
+<p class="font-bold mt-4 mb-2">Three Types of Data:</p>
+<p class="mb-1">• <strong>Strings (text)</strong> - Use quotes: "Hello"</p>
+<p class="mb-1">• <strong>Integers (whole numbers)</strong> - No quotes: 42</p>
+<p class="mb-1">• <strong>Floats (decimals)</strong> - No quotes: 3.14</p>
+
+<p class="font-bold mt-4 mb-2">Using Variables:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">name = "Tom"
+age = 28
+print(name)  # Shows: Tom
+print(age)   # Shows: 28
+
+age = 29     # Changed!
+print(age)   # Shows: 29</pre>
+
+<p class="font-bold mt-4 mb-2">Combining Strings:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">first = "John"
+last = "Smith"
+full = first + " " + last
+print(full)  # Shows: John Smith</pre>`,
+                exercise: "Create 3 variables: age (number), city (text), hobby (text). Then print all three.",
+                hint: "Text needs quotes, numbers don't! Make three variables: age = 25, city = 'London', hobby = 'coding'. Then print them.",
+                solution: `age = 25
+city = "London"
+hobby = "coding"
+
+print("Age:", age)
+print("City:", city)
+print("Hobby:", hobby)`
+            },
+            2: {
+                title: "Day 3: User Input & Output",
+                content: `<p class="font-bold text-lg mb-2">Getting User Input</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">name = input("What is your name? ")
+print("Hello", name)</pre>
+
+<p class="mb-2">When you run this:</p>
+<p class="mb-1">1. Python asks: "What is your name?"</p>
+<p class="mb-1">2. You type: Sarah</p>
+<p class="mb-1">3. Python says: Hello Sarah</p>
+
+<p class="font-bold mt-4 mb-2">Getting Numbers:</p>
+<p class="mb-2">input() always gives TEXT! To use as a number, convert it:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">age = int(input("How old? "))
+# Now age is a NUMBER you can do math with</pre>
+
+<p class="font-bold mt-4 mb-2">F-Strings (Best Way!):</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">name = "Alice"
+age = 30
+print(f"Hi {name}, you are {age}")
+# Shows: Hi Alice, you are 30</pre>
+
+<p class="mt-2">Put f before the quote, variables go in {}</p>`,
+                exercise: "Ask the user for their name, then print a greeting message using their name",
+                hint: "Use input() to get the name and store it. Then use print() with an f-string to greet them: f'Hello {name}!'",
+                solution: `name = input("What is your name? ")
+print(f"Hello, {name}! Nice to meet you!")
+print(f"Welcome to coding, {name}!")`
+            },
+            3: {
+                title: "Day 4: Math & String Operations",
+                content: `<p class="font-bold text-lg mb-2">Math in Python</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">5 + 3      # Addition = 8
+10 - 4     # Subtraction = 6
+6 * 7      # Multiplication = 42
+20 / 4     # Division = 5.0
+17 % 5     # Remainder = 2
+2 ** 3     # Power = 8</pre>
+
+<p class="font-bold mt-3 mb-2">Order Matters!</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">2 + 3 * 4      # = 14 (multiply first)
+(2 + 3) * 4    # = 20 (brackets first)</pre>
+
+<p class="font-bold mt-3 mb-2">String Operations:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">"Hello" + " World"  # Hello World
+"ha" * 3            # hahaha
+name.upper()        # UPPERCASE
+name.lower()        # lowercase</pre>
+
+<p class="font-bold mt-3 mb-2">Tip Calculator Example:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">bill = float(input("Bill: "))
+percent = float(input("Tip %: "))
+tip = bill * percent / 100
+print(f"Tip: £{tip:.2f}")</pre>`,
+                exercise: "Build a tip calculator: ask for bill amount and tip percentage, show the tip amount and total",
+                hint: "Get bill with float(input()), get tip percent, calculate: tip = bill * percent / 100, then total = bill + tip",
+                solution: `bill = float(input("Enter bill: £"))
+tip_percent = float(input("Tip percentage: "))
+
+tip = bill * tip_percent / 100
+total = bill + tip
+
+print(f"Tip: £{tip:.2f}")
+print(f"Total: £{total:.2f}")`
+            },
+            4: {
+                title: "Day 5: If/Else Statements",
+                content: `<p class="font-bold text-lg mb-2">Making Decisions</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">age = 18
+if age >= 18:
+    print("Can vote!")
+else:
+    print("Too young")</pre>
+
+<p class="bg-yellow-100 p-2 rounded mb-2">⚠️ The spaces before print are CRITICAL! This is called indentation.</p>
+
+<p class="font-bold mt-3 mb-2">Multiple Conditions:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">score = 85
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+elif score >= 70:
+    print("C")
+else:
+    print("F")</pre>
+
+<p class="font-bold mt-3 mb-2">Comparison Operators:</p>
+<p class="mb-1">== (equal to)</p>
+<p class="mb-1">!= (not equal)</p>
+<p class="mb-1">> (greater than)</p>
+<p class="mb-1">< (less than)</p>
+<p class="mb-1">>= (greater or equal)</p>
+<p class="mb-1"><= (less or equal)</p>`,
+                exercise: "Ask for a number and tell if it's positive, negative, or zero",
+                hint: "Use if num > 0 for positive, elif num < 0 for negative, else it's zero",
+                solution: `num = float(input("Enter a number: "))
+
+if num > 0:
+    print("Positive!")
+elif num < 0:
+    print("Negative!")
+else:
+    print("Zero!")`
+            },
+            5: {
+                title: "Day 6: Logical Operators",
+                content: `<p class="font-bold text-lg mb-2">Combining Conditions</p>
+
+<p class="font-bold mb-2">AND (both must be true):</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">age = 20
+has_ticket = True
+if age >= 18 and has_ticket:
+    print("Can enter")</pre>
+
+<p class="font-bold mb-2">OR (one must be true):</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">day = "Saturday"
+if day == "Saturday" or day == "Sunday":
+    print("Weekend!")</pre>
+
+<p class="font-bold mb-2">NOT (reverses):</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">raining = False
+if not raining:
+    print("Go outside!")</pre>
+
+<p class="font-bold mt-3 mb-2">Age Categories:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">age = int(input("Age: "))
+if age < 13:
+    print("Child")
+elif age >= 13 and age < 20:
+    print("Teen")
+elif age >= 20 and age < 65:
+    print("Adult")
+else:
+    print("Senior")</pre>`,
+                exercise: "Create age checker: child (under 13), teen (13-19), adult (20-64), senior (65+)",
+                hint: "Use if/elif with ranges: if age < 13, elif 13 <= age < 20, etc.",
+                solution: `age = int(input("Enter your age: "))
+
+if age < 13:
+    print("Category: Child")
+elif 13 <= age < 20:
+    print("Category: Teenager")
+elif 20 <= age < 65:
+    print("Category: Adult")
+else:
+    print("Category: Senior")`
+            },
+            6: {
+                title: "Day 7: Build an Adventure Game!",
+                content: `<p class="font-bold text-lg mb-2">Your First Game!</p>
+
+<p class="font-bold mb-2">Simple Adventure:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded mb-2">print("You see 3 doors")
+choice = input("Pick 1, 2, or 3: ")
+
+if choice == "1":
+    print("Dragon! LOSE")
+elif choice == "2":
+    print("Treasure! WIN!")
+elif choice == "3":
+    print("Empty room")
+else:
+    print("Invalid")</pre>
+
+<p class="font-bold mt-3 mb-2">Adding More Choices:</p>
+<pre class="bg-gray-800 text-green-400 p-3 rounded">print("Forest path")
+choice1 = input("Left or Right? ")
+
+if choice1 == "left":
+    print("River!")
+    choice2 = input("Swim or Build? ")
+    if choice2 == "swim":
+        print("WIN!")
+    else:
+        print("LOSE")
+else:
+    print("Bear! LOSE")</pre>
+
+<p class="font-bold mt-3 mb-2">Tips:</p>
+<p class="mb-1">• Plan your story first</p>
+<p class="mb-1">• Have at least one way to win</p>
+<p class="mb-1">• Add emojis for fun</p>
+<p class="mb-1">• Test every path</p>`,
+                exercise: "Create a 3-choice adventure game with different outcomes for each path",
+                hint: "Use if/elif/else for 3 different paths. Make one lead to winning! Add emojis to make it fun.",
+                solution: `print("🌲 Forest Adventure 🌲")
+print("You see 3 paths")
+print("1. Dark cave")
+print("2. Sunny meadow") 
+print("3. Old bridge")
+
+choice = input("Pick 1, 2, or 3: ")
+
+if choice == "1":
+    print("You find treasure! 💰")
+    print("YOU WIN!")
+elif choice == "2":
+    print("Friendly animals! 🦌")
+    print("YOU WIN!")
+elif choice == "3":
+    print("Bridge breaks! 💀")
+    print("GAME OVER")
+else:
+    print("Invalid choice")`
+            }
+        };
+
+        let done = JSON.parse(localStorage.getItem('done') || '[]');
+        let testPassed = localStorage.getItem('testPassed') === 'true';
+        let current = 0;
+
+        const testSolution = `age = int(input("How old are you? "))
+
+if age < 13:
+    print("You're a child!")
+    print("Recommended: Play games, learn new hobbies")
+elif age >= 13 and age < 20:
+    print("You're a teenager!")
+    print("Recommended: Study, sports, part-time jobs")
+elif age >= 20 and age < 65:
+    print("You're an adult!")
+    print("Recommended: Career, family, travel")
+else:
+    print("You're a senior!")
+    print("Recommended: Relaxation, hobbies, family time")`;
+
+        function updateButtons() {
+            for (let i = 0; i <= 6; i++) {
+                const btn = document.getElementById('btn' + i);
+                if (done.includes(i)) {
+                    btn.className = 'aspect-square bg-green-500 text-white border-2 border-green-600 rounded-xl flex items-center justify-center text-2xl font-bold';
+                    btn.textContent = '✓';
+                } else {
+                    btn.className = 'aspect-square bg-white border-2 border-indigo-400 rounded-xl hover:bg-indigo-100 flex items-center justify-center text-2xl font-bold';
+                    btn.textContent = i + 1;
+                }
+            }
+            document.getElementById('progress').textContent = Math.round(done.length / 7 * 100) + '%';
+            document.getElementById('completed').textContent = done.length;
+            document.getElementById('remaining').textContent = 7 - done.length;
+            
+            // Update test button
+            const testBtn = document.getElementById('testBtn');
+            if (done.length === 7) {
+                testBtn.disabled = false;
+                if (testPassed) {
+                    testBtn.className = 'w-full py-3 bg-green-500 text-white rounded-lg font-semibold mb-4';
+                    testBtn.textContent = '✓ Week Test Passed!';
+                } else {
+                    testBtn.className = 'w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold mb-4';
+                    testBtn.textContent = '🏆 Take Week 1 Test';
+                }
+            } else {
+                testBtn.className = 'w-full py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed mb-4';
+                testBtn.textContent = `🔒 Complete all 7 days to unlock Week Test (${done.length}/7)`;
+            }
+        }
+
+        function showDay(i) {
+            current = i;
+            const lesson = lessons[i];
+            document.getElementById('lessonArea').classList.remove('hidden');
+            document.getElementById('lessonTitle').textContent = lesson.title;
+            document.getElementById('lessonContent').innerHTML = lesson.content;
+            document.getElementById('exercise').textContent = lesson.exercise;
+            document.getElementById('hint').textContent = lesson.hint;
+            document.getElementById('hint').classList.add('hidden');
+            document.getElementById('solution').textContent = lesson.solution;
+            document.getElementById('solution').classList.add('hidden');
+            
+            if (done.includes(i)) {
+                document.getElementById('compBtn').textContent = '✓ Completed';
+                document.getElementById('compBtn').className = 'w-full py-3 bg-green-500 text-white rounded-lg font-semibold';
+            } else {
+                document.getElementById('compBtn').textContent = 'Mark Complete';
+                document.getElementById('compBtn').className = 'w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold';
+            }
+        }
+
+        function backToOverview() {
+            document.getElementById('lessonArea').classList.add('hidden');
+            document.getElementById('testArea').classList.add('hidden');
+        }
+        
+        function showTest() {
+            if (done.length < 7) return;
+            document.getElementById('testArea').classList.remove('hidden');
+            document.getElementById('testSolution').textContent = testSolution;
+            document.getElementById('testSolution').classList.add('hidden');
+            
+            if (testPassed) {
+                document.getElementById('passTestBtn').textContent = '✓ Test Already Passed!';
+                document.getElementById('passTestBtn').className = 'w-full py-4 bg-green-500 text-white rounded-lg font-semibold text-lg';
+            } else {
+                document.getElementById('passTestBtn').textContent = 'Mark Test as Passed';
+                document.getElementById('passTestBtn').className = 'w-full py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold text-lg';
+            }
+        }
+        
+        function showTestSolution() {
+            document.getElementById('testSolution').classList.toggle('hidden');
+        }
+        
+        function markTestPassed() {
+            testPassed = true;
+            localStorage.setItem('testPassed', 'true');
+            updateButtons();
+            showTest();
+            alert('🎉 Congratulations! You completed Week 1!\n\nYou\'ve earned: 🤓 Thick-Rimmed Glasses\n\n"Classic nerd starter pack!"');
+        }
+
+        function showHint() {
+            document.getElementById('hint').classList.toggle('hidden');
+        }
+
+        function showSolution() {
+            document.getElementById('solution').classList.toggle('hidden');
+        }
+
+        function markComplete() {
+            if (!done.includes(current)) {
+                done.push(current);
+                localStorage.setItem('done', JSON.stringify(done));
+                updateButtons();
+                showDay(current);
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Reset all progress? Cannot be undone!')) {
+                done = [];
+                testPassed = false;
+                localStorage.setItem('done', JSON.stringify(done));
+                localStorage.setItem('testPassed', 'false');
+                updateButtons();
+            }
+        }
+
+        updateButtons();
+    </script>
+</body>
+</html>Failed to load resource: the server responded with a status of 404 ()Understand this error
 52291-309d1a87cd8d8ec2.js:14 [ARTIFACTS] Received message does not conform to basic message shape, ignoring
 (anonymous) @ 52291-309d1a87cd8d8ec2.js:14Understand this warning
 452291-309d1a87cd8d8ec2.js:14 undefined
